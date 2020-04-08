@@ -1,0 +1,6 @@
+foo:
+	ADDI X0, XZR, #142
+	ADDI X0, XZR, #231
+	ADDI X0, XZR, #35520
+	ADDI X0, XZR, #1231
+	B foo

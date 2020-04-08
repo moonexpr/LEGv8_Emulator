@@ -1,0 +1,3 @@
+LDUR	X0, [X1, #0xFF]
+LSL	X0, X0, #2
+STUR	X0, [X1, #0xFF]

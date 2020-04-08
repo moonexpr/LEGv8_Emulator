@@ -1,0 +1,25 @@
+Instruction	Opcode (Hex)	Type
+------------------------------------------
+kADD		458		Register
+ADDI		488-489		Immediate
+AND		450		Register
+ANDI		490-491		Immediate
+B		0A0-0BF		Branch
+B.cond		2A0-2A7		CondBranch
+BL		4A0-4BF		Branch
+BR		6B0		Register
+CBNZ		5A8-5AF		CondBranch
+CBZ 		5A0-5A7		CondBranch
+EOR 		650		Register
+EORI		690-691		Immediate
+LDUR		7C2		Load
+LSL		69B		Register
+LSR		69A		Register
+MUL		4D8		Register
+ORR		550		Register
+ORRI		590-591		Immediate
+STUR		7C0		Load
+SUB		658		Register
+SUBI		688-689		Immediate
+SUBIS		788-789		Immediate
+SUBS 		758		Register
