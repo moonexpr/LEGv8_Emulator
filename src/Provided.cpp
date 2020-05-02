@@ -5,7 +5,7 @@
 #include <ctype.h>
 #include <iostream>
 
-#define H_Provided
+#define H_PROVIDED
 
 namespace Provided
 {

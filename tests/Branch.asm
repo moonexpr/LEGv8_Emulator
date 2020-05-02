@@ -1,6 +1,11 @@
+bar:
+    BL      foo
+    ADDI    X0, XZR, #0xFF
+    BL      foo
+    B done
+
 foo:
-	ADDI X0, XZR, #142
-	ADDI X0, XZR, #231
-	ADDI X0, XZR, #35520
-	ADDI X0, XZR, #1231
-	B foo
+    PRNT    X0
+    BR      LR
+
+done:
