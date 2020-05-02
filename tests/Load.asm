@@ -21,6 +21,7 @@ fib:
 ADDI X1, XZR, #2
 SUBS X1, X0, X1
 B.LT end_fib
+DUMP
 // save link register
 SUBI SP, SP, #16
 STUR LR, [SP, #8]

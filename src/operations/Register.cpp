@@ -101,7 +101,7 @@ void instr_dump(CpuModel * mdl, Instruction * instr)
 
     printf("\nInstructions\n");
     InstructionLL * linkedList = mdl->getHead();
-    while ((linkedList = linkedList->getNext()))
+    while (linkedList)
     {
         Instruction * cur = linkedList->getInstruction();
         if (cur->isValid())
@@ -109,6 +109,7 @@ void instr_dump(CpuModel * mdl, Instruction * instr)
             printf(cur == instr ? " **\t" : "\t");
             cur->decode();
         }
+        linkedList = linkedList->getNext();
     }
 }
 

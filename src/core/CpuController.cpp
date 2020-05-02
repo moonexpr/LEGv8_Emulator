@@ -164,6 +164,14 @@ void CpuController::memoryHandle(Instruction * instr)
     MemModel * mem = this->mdl->getMemory();
     int64_t addr = this->mdl->getRegister(instr->decodeRn()) + instr->decodeDTAddr();
     int64_t Rt   = this->mdl->getRegister(instr->decodeRt());
+    int64_t frame   = this->mdl->getRegister(FP);
+
+    if (addr >= frame)
+    {
+        instr_dump(this->mdl, instr);
+        printf("Address %#010lx out of bounds.\n", addr);
+        exit(0);
+    }
 
     switch(instr->getOpcode())
     {
