@@ -12,7 +12,7 @@ CpuController::CpuController(CpuModel * mdl)
 
 void CpuController::process(Instruction * instr)
 {
-    // std::cout << instr->getName() << std::endl;
+    std::cout << instr->getName() << std::endl;
     OpFunc callback = getOperationFunc(instr);
     (*this.*callback)(instr);
 }

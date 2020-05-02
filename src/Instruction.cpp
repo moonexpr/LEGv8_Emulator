@@ -1,5 +1,3 @@
-
-
 #include "Instruction.h"
 
 Instruction::Instruction(int32_t code)
@@ -12,6 +10,54 @@ Instruction::~Instruction()
 
 }
 
+void Instruction::decode()
+{
+    std::map<int, const char *> names = instructionNames();
+
+    enum InstType type = this->getType();
+    switch(type)
+    {
+        case Register:
+        {
+            const char * instrName = names[this->getOpcode()];
+            if (!strcmp(instrName, "DUMP") || !strcmp(instrName, "PRNL") || !strcmp(instrName, "PRNT") || !strcmp(instrName, "HALT")) printf("%s\n", names[this->getOpcode()]);
+            else if (!strcmp(instrName, "LSL") || !strcmp(instrName, "LSR")) printf("%s\tX%d, X%d, #%d\n", names[this->getOpcode()], this->decodeRd(), this->decodeRn(), this->decodeShamt());
+            else if (!strcmp(instrName, "BR")) printf("%s\tX%d\n", names[this->getOpcode()], this->decodeRn());
+            else printf("%s\tX%d, X%d, X%d\n", names[this->getOpcode()], this->decodeRd(), this->decodeRn(), this->decodeRm());
+            break;
+        }
+
+        case Immediate:
+            printf("%s\tX%d, X%d, #%d\n", names[this->getOpcode()], this->decodeRd(), this->decodeRn(), this->decodeALU());
+            break;
+
+        case Load:
+            printf("%s\tX%d, [X%d, #%d]\n", names[this->getOpcode()], this->decodeRt(), this->decodeRn(), this->decodeDTAddr());
+            break;
+
+        case Branch:
+            printf("%s\t%d\n", names[this->getOpcode()], this->decodeBRAddr());
+            break;
+
+        case CondBranch:
+        {
+            const char * thisName = names[this->getOpcode()];
+            std::map<int, const char *> condNames = conditionalNames();
+            if (!strcmp(thisName, "B.C")) 
+                printf("B.%s\t%d\n", condNames[this->decodeRt()], this->decodeCondAddr());
+            else 
+                printf("%s\tX%d, %d\n", names[this->getOpcode()], this->decodeRt(), this->decodeCondAddr());
+
+            break;
+        }
+
+        case ImmediateWide:
+            break;
+
+        case Unknown:
+            break;
+    }
+}
 
 bool Instruction::isValid()
 {

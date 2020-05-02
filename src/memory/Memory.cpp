@@ -1,7 +1,8 @@
 #include <cstdint>
+#include <iostream>
 #include <stdlib.h>
 
-#define MEMORY_SIZE 2176
+#define MEMORY_SIZE 4096
 
 class MemModel
 {
@@ -11,6 +12,8 @@ class MemModel
     public:
     MemModel();
     ~MemModel();
+
+    int8_t * getBasePtr();
 
     int64_t readDoubleWord(int8_t addr);
     void writeDoubleWord(int8_t addr, int64_t dw);
@@ -30,6 +33,11 @@ MemModel::~MemModel()
     free(this->main);
 }
 
+
+int8_t * MemModel::getBasePtr()
+{
+    return this->main;
+}
 
 int64_t MemModel::readDoubleWord(int8_t addr)
 {
@@ -68,6 +76,7 @@ void MemModel::writeWord(int8_t addr, int32_t w)
 int16_t MemModel::readHalfWord(int8_t addr)
 {
     int8_t * baseAddr = this->main + addr;
+
     int8_t highOrder = *(baseAddr    ) << 8;
     int8_t lowOrder  = *(baseAddr + 1);
 

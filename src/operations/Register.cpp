@@ -12,6 +12,10 @@
 #include "../core/Flags.h"
 #endif
 
+#ifndef H_PROVIDED
+#include "../Provided.cpp"
+#endif
+
 int64_t instr_add(int64_t a, int64_t b)
 {
     return a + b;
@@ -86,7 +90,25 @@ void instr_dump(CpuModel * mdl, Instruction * instr)
     for (int r = 0; r < REGISTER_MAX; r++)
     {
         uint64_t value = mdl->getRegister(r);
-        std::cout << "X" << r << ":\t" << std::hex << value << " (" << value << ")" << std::endl;
+        printf("X%d\t%#016lx (%ld)\n", r, value, value);
+    }
+
+    printf("\nStack\n");
+    Provided::hexdump(stdout, mdl->getMemory()->getBasePtr(), STACK_SIZE);
+
+    printf("\nMain Memory\n");
+    Provided::hexdump(stdout, mdl->getMemory()->getBasePtr(), MEMORY_SIZE);
+
+    printf("\nInstructions\n");
+    InstructionLL * linkedList = mdl->getHead();
+    while ((linkedList = linkedList->getNext()))
+    {
+        Instruction * cur = linkedList->getInstruction();
+        if (cur->isValid())
+        {
+            printf(cur == instr ? " **\t" : "\t");
+            cur->decode();
+        }
     }
 }
 

@@ -25,6 +25,7 @@ class CpuModel
     CpuModel();
     ~CpuModel();
 
+    InstructionLL * getHead();
     InstructionLL * getPc();
     void setPc(InstructionLL * pc);
     void forwardPc();

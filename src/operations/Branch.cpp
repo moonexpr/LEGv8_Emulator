@@ -49,4 +49,6 @@ bool instr_branch_assert(CpuModel * mdl, int8_t test)
         /* LE */ case 0xD: return (flags & NEGATIVE) || (flags & ZERO);
     
     }
+
+    return 0;
 }

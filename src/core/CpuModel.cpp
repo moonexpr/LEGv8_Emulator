@@ -21,6 +21,11 @@ CpuModel::CpuModel()
 
 CpuModel::~CpuModel() { }
 
+InstructionLL * CpuModel::getHead()
+{
+    return this->head;
+}
+
 InstructionLL * CpuModel::getPc()
 {
     return this->pc;

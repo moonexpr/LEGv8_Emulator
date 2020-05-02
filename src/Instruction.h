@@ -1,6 +1,7 @@
 #include <map>
 #include <sys/types.h>
 #include <iostream>
+#include <string.h>
 
 
 #ifndef H_PROVIDED
@@ -90,6 +91,7 @@ class Instruction
 
     bool isValid();
     int32_t mask(int start, int end);
+    void decode();
     InstType getType();
 
     const char * getName();
