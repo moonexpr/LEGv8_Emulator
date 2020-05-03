@@ -12,7 +12,6 @@ CpuController::CpuController(CpuModel * mdl)
 
 void CpuController::process(Instruction * instr)
 {
-    std::cout << instr->getName() << std::endl;
     OpFunc callback = getOperationFunc(instr);
     (*this.*callback)(instr);
 }
@@ -151,25 +150,26 @@ void CpuController::conditionalHandle(Instruction * instr)
 
     switch(instr->getOpcode())
     {
-        /* B.cond */ case 0b01010100: if (! instr_branch_assert(this->mdl, Rt)) return;
-        /* CBNZ   */ case 0b10110101: if (! (Rt != 0)) return;
-        /* CBZ    */ case 0b10110100: if (! (Rt == 0)) return;
+        /* B.cond */ case 0b01010100: if (! instr_branch_assert(this->mdl, instr->decodeRt())) return; break;
+        /* CBNZ   */ case 0b10110101: if (! (Rt != 0)) return; break;
+        /* CBZ    */ case 0b10110100: if (! (Rt == 0)) return; break;
     }
 
-    instr_branch(this->mdl, mdl->getRegister(instr->decodeCondAddr()));
+    instr_branch(this->mdl, instr->decodeCondAddr());
+    this->process(this->mdl->getPc()->getInstruction());
 }
 
 void CpuController::memoryHandle(Instruction * instr)
 {
     MemModel * mem = this->mdl->getMemory();
-    int64_t addr = this->mdl->getRegister(instr->decodeRn()) + instr->decodeDTAddr();
+    int32_t addr = this->mdl->getRegister(instr->decodeRn()) + instr->decodeDTAddr();
     int64_t Rt   = this->mdl->getRegister(instr->decodeRt());
     int64_t frame   = this->mdl->getRegister(FP);
 
-    if (addr >= frame)
+    if (addr >= frame || addr < 0)
     {
         instr_dump(this->mdl, instr);
-        printf("Address %#010lx out of bounds.\n", addr);
+        printf("Address %#010x out of bounds.\n", addr);
         exit(0);
     }
 

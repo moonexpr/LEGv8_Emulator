@@ -1,4 +1,4 @@
-
+#include <iostream>
 #ifndef H_CpuModel
 #include "CpuModel.cpp"
 #endif

@@ -65,9 +65,12 @@ int64_t instr_lsr(int64_t a, int8_t s)
 int64_t instr_subs(int64_t a, int64_t b, uint8_t * flag)
 {
     int64_t r = a - b;
+    bool aP = a > 0;
+    bool rP = r > 0;
 
-    if (r > a)  *flag |= OVERFLOW;
-    if (r == 0) *flag |= ZERO;
+    if (!(aP || rP) || (aP && rP))  *flag |= OVERFLOW;
+    if (r == 0)                     *flag |= ZERO;
+    if (r < 0)                      *flag |= NEGATIVE;
 
     return r;
 }
@@ -76,7 +79,7 @@ void instr_prnt(CpuModel * mdl, Instruction * instr)
 {
     int16_t reg = instr->decodeRd();
     int64_t value = mdl->getRegister(reg);
-    printf("X%d\t: %ld\n", reg, value);
+    printf("X%d:\t%#016lx (%ld)\n", reg, value, value);
 }
 
 void instr_prnl(CpuModel * mdl, Instruction * instr)
@@ -90,7 +93,7 @@ void instr_dump(CpuModel * mdl, Instruction * instr)
     for (int r = 0; r < REGISTER_MAX; r++)
     {
         uint64_t value = mdl->getRegister(r);
-        printf("X%d\t%#016lx (%ld)\n", r, value, value);
+        printf("X%d:\t%#016lx (%ld)\n", r, value, value);
     }
 
     printf("\nStack\n");
@@ -119,10 +122,3 @@ void instr_halt(CpuModel * mdl, Instruction * instr)
     exit(0);
 }
 
-/**
-Instruction * instr;
-Mdl * mdl;
-CpuController * ctrl = new CpuController(mdl);
-ctrl->process(mdl);
-
-**/
